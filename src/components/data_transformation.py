@@ -29,7 +29,7 @@ class DataTransformation:
         '''
         logging.info("Entered the data transormation component")
         try:
-            numerical_columns = ['Year', 'Selling_Price', 'Present_Price', 'Kms_Driven', 'Owner']#list(df.select_dtypes(include='object').columns)
+            numerical_columns = ['Year', 'Present_Price', 'Kms_Driven', 'Owner']#list(df.select_dtypes(include='object').columns)
             categorical_columns = [ 'Fuel_Type', 'Seller_Type', 'Transmission']
 
             num_pipeline= Pipeline(
@@ -77,7 +77,7 @@ class DataTransformation:
             preprocessing_obj=self.get_data_transformer_object()
 
             target_column_name="Selling_Price"
-            numerical_columns = ['Year', 'Present_Price', 'Kms_Driven', 'Owner']
+            #numerical_columns = ['Year', 'Present_Price', 'Kms_Driven', 'Owner']
 
             input_feature_train_df=train_df.drop(columns=[target_column_name],axis=1)
             target_feature_train_df=train_df[target_column_name]
@@ -89,6 +89,8 @@ class DataTransformation:
             logging.info(
                 f"Applying preprocessing object on training dataframe and testing dataframe."
             )
+            logging.info(str(input_feature_train_df.columns))
+            logging.info(str(input_feature_test_df.columns))
 
             input_feature_train_arr=preprocessing_obj.fit_transform(input_feature_train_df)
             input_feature_test_arr=preprocessing_obj.transform(input_feature_test_df)
@@ -107,8 +109,7 @@ class DataTransformation:
 
             return (
                 train_arr,
-                test_arr,
-                self.data_transformation_config.preprocessor_obj_file_path,
+                test_arr                
             )
         except Exception as e:
             raise CustomException(e,sys)
